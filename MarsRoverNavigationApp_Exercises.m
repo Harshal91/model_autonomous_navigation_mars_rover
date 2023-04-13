@@ -615,7 +615,7 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
                 return;
             end
             
-            if endLocationX(1) < 7 || endLocationX(1) > 21 
+            if endLocationX(1) < 7 || endLocationX(1) > 20 
                 uialert(app.MarsRoverNavigationAppUIFigure,"Egress path should be, at least 2 meters and at most 15 meters long.",'Invalid egress path');
                 return;
             end
@@ -630,7 +630,7 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
                 return;
             end
 
-            if endLocation(1) < 7 || endLocation(1) > 21 
+            if endLocation(1) < 7 || endLocation(1) > 20 
                 uialert(app.MarsRoverNavigationAppUIFigure,"Egress path should be, atleast 2 meters and atmost 15 meters long.",'Invalid egress path');
                 return;
             end
@@ -742,7 +742,8 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             isMdlOpen = get_param('mars_rover_explore','Shown');
             if isMdlOpen
                 set(f, 'pointer', 'arrow');
-            end
+            end            
+            app.MarsRoverNavigationAppUIFigure.WindowState = 'minimized';            
         end
 
         function SimulateButtonEx1aButtonDown(app,event)
@@ -779,7 +780,7 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
                 return;
             end
            
-            model = 'mars_rover_dl';                     
+            model = 'mars_rover_cam';                     
             
             if ~bdIsLoaded(model)
                 load_system(model);
@@ -859,7 +860,7 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             evalin('base','Exercise.ex3_flag=0;');
             evalin('base','Exercise.ex4_flag=0;');       
 
-            model = 'mars_rover_dl';               
+            model = 'mars_rover_pose';               
 
             updateExerciseSpecificModelParams(app)
 
@@ -927,7 +928,7 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             % app.SimulateButtonEx1a.Enable = 'on';
             % app.SimulateButtonEx1a.Text = 'Calibrate';
             evalin('base','mars_rover_egress_plots');
-            
+            app.TabGroup.SelectedTab = app.RoverOutputsTab;
 
             end
                                            
@@ -1026,7 +1027,7 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
 
             app.statusBarGrid.Visible = 'off';
             app.SimulateButtonEx2.Enable = 'on';
-            app.SimulateButtonEx2.Text = 'Detect';
+            app.SimulateButtonEx2.Text = 'Detect';          
 
             end
 
@@ -1184,7 +1185,7 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
                 return;
             end
             
-            if endLocation(1) < 7 || endLocation(1) > 21 
+            if endLocation(1) < 7 || endLocation(1) > 20 
                 uialert(app.MarsRoverNavigationAppUIFigure,"Egress path should be, at least 2 meters and at most 15 meters long.",'Invalid egress path');
                 return;
             end
@@ -1266,11 +1267,15 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             d = uiprogressdlg(app.MarsRoverNavigationAppUIFigure,'Message','Closing app...','Title','Close');
             d.Value = 0.5;
                 
-            models = {'mars_rover_dl','mars_rover_nav'};
+            models = {'mars_rover_dl',...
+                'mars_rover_nav',...
+                'mars_rover_explore',...
+                'mars_rover_cam',...
+                'mars_rover_pose'};
             simStatus = {'','','',''};
             for i = 1:length(models)          
            
-                if bdIsLoaded(models{i})
+                if bdIsLoaded(models{i})                 
                 set_param(models{i}, 'SimulationCommand', 'stop') 
                 simStatus{i} = get_param(models{i},'SimulationStatus');
                 end                                     
@@ -1284,14 +1289,10 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
                     'Make sure all the exercise simulations are stopped before attempting to close the app.','Close');                
                 return;
             else
-                set_param('mars_rover_dl',"FastRestart","off")
-                close_system('mars_rover_dl',0);                
-                close_system('mars_rover_explore',0);
-                set_param('mars_rover_nav',"FastRestart","off")
-                close_system('mars_rover_nav',0);
+
                 d.Value = 1;
                 delete(d)
-                try                
+                try
                 close(app.MarsRoverNavigationAppUIFigure,'force');
                 catch
                 end

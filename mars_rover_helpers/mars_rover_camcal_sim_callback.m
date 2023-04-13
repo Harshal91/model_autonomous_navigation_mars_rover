@@ -2,7 +2,7 @@
 
 % Copyright 2022-2023 The MathWorks, Inc
 
-model = 'mars_rover_dl';
+model = 'mars_rover_cam';
 if ~exist('mapp') 
     mars_rover_app
 elseif ~isvalid(mapp)

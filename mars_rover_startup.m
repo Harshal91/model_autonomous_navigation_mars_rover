@@ -2,8 +2,10 @@
 
 % Copyright 2022-2023 The MathWorks, Inc
 flag_explore = false;
+flag_cam = false;
 flag_dl = false;
 flag_nav = false;
+flag_pose = false;
 
 addpath('mars_rover_helpers')
 addpath('mars_rover_data')
@@ -29,6 +31,7 @@ mars_rover_params
 %% App setup
 id = 'Simulink:Engine:NonTunableVarChangedInFastRestart';
 warning('off',id)
+warning('off','Stateflow:translate:SFcnBlkNotTunableParamChangeFastRestart')
 warning('off','Simulink:Engine:NonTunableVarChangedMaxWarnings');
 
 %% Setup models
@@ -46,6 +49,20 @@ end
 d.Value = .5; 
 d.Message = 'Loading exercise 2';
 pause(0.005)
+
+model_cam = 'mars_rover_cam';
+
+if ~bdIsLoaded(model_cam)
+    load_system(model_cam);
+    flag_cam = true;
+end
+
+model_pose = 'mars_rover_pose';
+
+if ~bdIsLoaded(model_pose)
+    load_system(model_pose);
+    flag_pose = true;
+end
 
 model_dl = 'mars_rover_dl';
 
@@ -68,6 +85,40 @@ end
 %% Compile models
 d.Value = .75; 
 d.Message = 'Updating models (this may take a few mins)...';
+
+if flag_cam
+    Exercise.ex4_flag = 0;
+    Exercise.ex2a_flag = 1;
+    Exercise.ex2b_flag = 0;
+    Exercise.ex3_flag = 0;
+    origText = mapp.SimulateButtonEx1a.Text;
+    set_param(model_cam,'FastRestart','on');
+    st_orig = get_param(model_cam,'StopTime');
+    set_param(model_cam,'StopTime','1');   
+    sim(model_cam);
+    set_param(model_cam,'StopTime',st_orig);
+  
+    mapp.SimulateButtonEx1a.Text = origText;
+    mapp.SimulateButtonEx1a.Enable = 'on';   
+    flag_cam = false;
+end
+
+if flag_pose
+    Exercise.ex4_flag = 0;
+    Exercise.ex2a_flag = 0;
+    Exercise.ex2b_flag = 1;
+    Exercise.ex3_flag = 0;
+    origText = mapp.SimulateButtonEx1.Text;
+    set_param(model_pose,'FastRestart','on');
+    st_orig = get_param(model_pose,'StopTime');
+    set_param(model_pose,'StopTime','1');   
+    sim(model_pose);
+    set_param(model_pose,'StopTime',st_orig);
+  
+    mapp.SimulateButtonEx1.Text = origText;
+    mapp.SimulateButtonEx1.Enable = 'on';   
+    flag_pose = false;
+end
 
 if flag_dl
     Exercise.ex4_flag = 0;

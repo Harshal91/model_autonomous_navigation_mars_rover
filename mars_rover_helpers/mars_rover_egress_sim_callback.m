@@ -2,7 +2,7 @@
 
 % Copyright 2022-2023 The MathWorks, Inc
 
-model = 'mars_rover_dl';
+model = 'mars_rover_pose';
 
 if ~exist('mapp') 
     error('Mars Rover Navigation App is not open. Open the app and run the model again.')

@@ -6,21 +6,10 @@ switch true
 
     case evalin('base','Exercise.ex2a_flag == 1')
 
-        model  = 'mars_rover_dl';
-        % Turn off object detection for ex-1
-        evalin('base','Rover.detection_phaseDelay=1e5;');
-        evalin('base','Rover.detection_sample_time=1e5;');
-        % Turn off rover controller for ex-1
-        evalin('base','Rover.start_time = 1e5;');
+        model  = 'mars_rover_cam';      
         % Turn on camera pan control for ex-1
-        evalin('base','Rover.cam_pan_flag = 1;');
-        evalin('base','Rover.detectionThreshold =1;');
-        % Make the rover 6 DOF highly damped to improve performance
-        blk = [model '/Mars Rover Plant/Rover Plant Model/Rover Pose Sensing/Rover Six Dof'];
-        set_param(blk,'PxDampingCoefficient','1e10');
-        set_param(blk,'PyDampingCoefficient','1e10');
-        set_param(blk,'PzDampingCoefficient','0');
-
+        evalin('base','Rover.cam_pan_flag = 1;');       
+        
         pan_range = [str2double(app.CameraPanEditField1Ex1.Value) str2double(app.CameraPanEditField2Ex1.Value)];
         evalin('base',['Rover.cam_pan_range = [',num2str(pan_range),'];']);
         evalin('base',['Rover.cam_pitch = ',app.CameraPitchEditField.Value,';']);
@@ -31,12 +20,12 @@ switch true
 
     case evalin('base','Exercise.ex2b_flag == 1')
 
-        model  = 'mars_rover_dl';
+        model  = 'mars_rover_pose';
+        evalin('base','Rover.cam_pitch = 10;');
         evalin('base','Rover.start_time=1;');
         evalin('base','Rover.cam_pan_flag=0;');
         evalin('base','Rover.detection_phaseDelay=1e5;');
         evalin('base','Rover.detection_sample_time=1e5;');
-
 
         blk = [model '/Mars Rover Plant/Rover Plant Model/Rover Pose Sensing/Rover Six Dof'];
         set_param(blk,'PxDampingCoefficient','0');
@@ -55,11 +44,7 @@ switch true
         evalin('base','Rover.start_time=1e5;');
         evalin('base','Rover.cam_pan_flag=1;');
         evalin('base','Rover.cam_pitch = 10;');
-
-        blk = [model '/Mars Rover Plant/Rover Plant Model/Rover Pose Sensing/Rover Six Dof'];
-        set_param(blk,'PxDampingCoefficient','1e10');
-        set_param(blk,'PyDampingCoefficient','1e10');
-        set_param(blk,'PzDampingCoefficient','0');        
+             
         pan_range = [str2double(app.CameraPanEditField1Ex2.Value) str2double(app.CameraPanEditField2Ex2.Value)];
 
         evalin('base',['Rover.cam_pan_range = [',num2str(pan_range),'];']); 
