@@ -177,6 +177,21 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             % implement datacursor mode later.
             app.TerrainAxes.Interactions = [rotateInteraction zoomInteraction rulerPanInteraction ];
             app.BinaryOccupancyAxes.Interactions = [rotateInteraction zoomInteraction rulerPanInteraction ];
+            app.LeftNavCamAxes.Interactions = [];
+            app.RightNavCamAxes.Interactions = [];
+            enableLegacyExplorationModes(app.MarsRoverNavigationAppUIFigure)
+
+            axtoolbar(app.OutputAxes_1,{'restoreview'});
+            axtoolbar(app.OutputAxes_2,{'restoreview'});
+            axtoolbar(app.OutputAxes_3,{'restoreview'});
+            axtoolbar(app.OutputAxes_4,{'restoreview'});
+            axtoolbar(app.TerrainAxes,{'restoreview'});
+            axtoolbar(app.BinaryOccupancyAxes,{'restoreview'});
+            axtoolbar(app.OnlinePathPlansAxes,{'restoreview'});
+            axtoolbar(app.RightNavCamAxes,{'restoreview'});
+            axtoolbar(app.LeftNavCamAxes,{'restoreview'});
+           
+
             % Turn clipping off for surf plot zoom.
             app.TerrainAxes.Clipping = 'off';
 
@@ -579,19 +594,36 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             app.TabGroup.SelectedTab = app.PathPlannerTab;
             value = app.PickGoalpointsinMapCheckBox.Value;
             if value
-                set(app.TerrainAxes.Toolbar,'Visible','off')
-                set(app.BinaryOccupancyAxes.Toolbar,'Visible','off')
-
+               
                 app.dcm_obj = datacursormode(app.MarsRoverNavigationAppUIFigure);
                 app.dcm_obj.Enable = 'on';
                 app.dcm_obj.DisplayStyle = 'datatip';
-            else
-                set(app.TerrainAxes.Toolbar,'Visible','on')
-                set(app.BinaryOccupancyAxes.Toolbar,'Visible','on')
 
+                % set(app.TerrainAxes.Toolbar,'Visible','off')
+                % set(app.BinaryOccupancyAxes.Toolbar,'Visible','off')
+                % set(app.RightNavCamAxes.Toolbar,'Visible','off')
+                % set(app.LeftNavCamAxes.Toolbar,'Visible','off')
+                % set(app.OnlinePathPlansAxes.Toolbar,'Visible','off')
+                % set(app.OutputAxes_1.Toolbar,'Visible','off')
+                % set(app.OutputAxes_2.Toolbar,'Visible','off')
+                % set(app.OutputAxes_3.Toolbar,'Visible','off')
+                % set(app.OutputAxes_4.Toolbar,'Visible','off')
+                
+            else
+               
                 app.dcm_obj = datacursormode(app.MarsRoverNavigationAppUIFigure);
                 app.dcm_obj.Enable = 'off';
                 app.dcm_obj.DisplayStyle = 'datatip';
+
+                % set(app.TerrainAxes.Toolbar,'Visible','off')
+                % set(app.BinaryOccupancyAxes.Toolbar,'Visible','off')
+                % set(app.RightNavCamAxes.Toolbar,'Visible','off')
+                % set(app.LeftNavCamAxes.Toolbar,'Visible','off')
+                % set(app.OnlinePathPlansAxes.Toolbar,'Visible','off')
+                % set(app.OutputAxes_1.Toolbar,'Visible','off')
+                % set(app.OutputAxes_2.Toolbar,'Visible','off')
+                % set(app.OutputAxes_3.Toolbar,'Visible','off')
+                % set(app.OutputAxes_4.Toolbar,'Visible','off')
 
             end
         end
