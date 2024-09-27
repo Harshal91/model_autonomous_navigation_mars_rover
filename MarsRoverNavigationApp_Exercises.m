@@ -1360,7 +1360,7 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             app.MarsRoverNavigationAppUIFigure.Tag = 'uifig';
             app.MainGridLayout = uigridlayout(app.MarsRoverNavigationAppUIFigure, [12 3]);
             app.MainGridLayout.RowHeight = {'1x'};
-            app.MainGridLayout.ColumnWidth = {'fit', '1x', '1x'};
+            app.MainGridLayout.ColumnWidth = {460,'1x','1x'}; %{'fit', '1x', '1x'};
             app.MainGridLayout.Scrollable = 'on';
             % app.MainGridLayout.BackgroundColor = 'white';
 
@@ -1564,6 +1564,7 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
 
             accEx0 = matlab.ui.container.internal.Accordion('Parent', app.LeftContainer);
             app.Exercise0Panel = matlab.ui.container.internal.AccordionPanel('Parent', accEx0);
+            app.Exercise0Panel.BackgroundColor = 'white';
             %  app.Exercise1Panel.BackgroundColor = 'white';
             app.Exercise0Panel.Title = 'Exercise - 1 : Explore Rover Model';
             app.Exercise0Panel.CollapsedChangedFcn = createCallbackFcn(app, @Ex0CollapsedChangedFcn, true);
@@ -1575,17 +1576,19 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
 
             accEx1 = matlab.ui.container.internal.Accordion('Parent', app.LeftContainer);
             app.Exercise1Panel = matlab.ui.container.internal.AccordionPanel('Parent', accEx1);
+            app.Exercise1Panel.BackgroundColor = 'white';
             %  app.Exercise1Panel.BackgroundColor = 'white';
             app.Exercise1Panel.Title = 'Exercise - 2 : Calibration';
             app.Exercise1Panel.CollapsedChangedFcn = createCallbackFcn(app, @Ex1CollapsedChangedFcn, true);
             pnlGL1 = uigridlayout(app.Exercise1Panel, [10 3]);
             pnlGL1.RowHeight = {"fit", "fit", "fit","fit","fit","fit","fit","fit","fit","fit"};
             pnlGL1.ColumnWidth = {"fit"};
-            pnlGL1.BackgroundColor = '#f0f0f0';
+            pnlGL1.BackgroundColor ='#f0f0f0';
             createEx1Components(app, pnlGL1);
 
             accEx2 = matlab.ui.container.internal.Accordion('Parent', app.LeftContainer);
             app.Exercise2Panel = matlab.ui.container.internal.AccordionPanel('Parent', accEx2);
+            app.Exercise2Panel.BackgroundColor = 'white';
             app.Exercise2Panel.CollapsedChangedFcn = createCallbackFcn(app, @Ex2CollapsedChangedFcn, true);
             app.Exercise2Panel.Title = 'Exercise - 3 : Object Detection';
             app.Exercise2Panel.Collapsed = true;
@@ -1593,11 +1596,12 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             pnlGL2 = uigridlayout(app.Exercise2Panel, [3 3]);
             pnlGL2.RowHeight = {"fit", "fit", "fit"};
             pnlGL2.ColumnWidth = {"fit"};
-            pnlGL2.BackgroundColor = '#f0f0f0';
+            pnlGL2.BackgroundColor ='#f0f0f0';
             createEx2Components(app, pnlGL2);
 
             accEx3 = matlab.ui.container.internal.Accordion('Parent', app.LeftContainer);
             app.Exercise3Panel = matlab.ui.container.internal.AccordionPanel('Parent', accEx3);
+            app.Exercise3Panel.BackgroundColor = 'white';
             app.Exercise3Panel.Title = 'Exercise - 4 : Navigation';
             app.Exercise3Panel.Tag = 'Ex3Panel';
             % app.Exercise3Panel.BackgroundColor = 'white';
@@ -1813,7 +1817,7 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             app.GoalLocationTEditField.Layout.Column = 4;
 
             app.KalmanFilterCheckBox = uicheckbox(swapGL_1);
-            app.KalmanFilterCheckBox.Text = ' Optimal position estimator';
+            app.KalmanFilterCheckBox.Text = ' Optimal estimator';
             app.KalmanFilterCheckBox.Enable = 'on';
             app.KalmanFilterCheckBox.ValueChangedFcn = createCallbackFcn(app, @KalmanFilterValueChangedFcn, true);
             app.KalmanFilterCheckBox.Value = true;
