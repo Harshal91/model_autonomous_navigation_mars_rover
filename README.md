@@ -1,6 +1,6 @@
 # Autonomous Mars rover
 
-% Copyright 2023 The MathWorks, Inc.
+% Copyright 2023-2024 The MathWorks, Inc.
 
 This example models a mars rover performing a sample retrieval task. The rover 
 follows a desired path on a rigid terrain surface, stops at the target location 
