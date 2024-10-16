@@ -7,6 +7,12 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
         RightPanel;
         LeftContainer;
         StatusPanel;
+        Tree;
+        ExerciseGrids;
+        Ex0TitleLabel;
+        Ex1TitleLabel;
+        Ex2TitleLabel;
+        Ex3TitleLabel;
 
         TabGroup;
         PathPlannerTab;
@@ -169,10 +175,7 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
 
             warning('off','MATLAB:callback:DeletedSource')
             % re-do
-            addpath("mars_rover_helpers");
-            app.Exercise1Panel.collapse;
-            app.Exercise2Panel.collapse;
-            app.Exercise3Panel.collapse;
+            addpath("mars_rover_helpers");            
             % Remove Data tip interaction from both UI Axes. Since we
             % implement datacursor mode later.
             app.TerrainAxes.Interactions = [rotateInteraction zoomInteraction rulerPanInteraction ];
@@ -776,6 +779,16 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
                 set(f, 'pointer', 'arrow');
             end            
             app.MarsRoverNavigationAppUIFigure.WindowState = 'minimized';            
+        end
+
+        function GoToMainMenu(app,event)                       
+
+            % Hide all exercise grid layouts first
+            keys = app.ExerciseGrids.keys();
+            for i = 1:length(keys)
+                gridLayout = app.ExerciseGrids(keys{i}); % Use parentheses for indexing
+                gridLayout.Visible = 'off';
+            end
         end
 
         function SimulateButtonEx1aButtonDown(app,event)
@@ -1557,62 +1570,61 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
         end
 
         function createUIControl(app)
-            app.LeftContainer = uigridlayout(app.LeftPanel, [5 1]);
-            app.LeftContainer.RowHeight = {"fit", "fit", "fit", "fit"};
-            app.LeftContainer.ColumnWidth = {"fit"};
+            app.LeftContainer = uigridlayout(app.LeftPanel, [1 1]);
+            app.LeftContainer.RowHeight = {"1x"};
+            app.LeftContainer.ColumnWidth = {"1x"};
             app.LeftContainer.BackgroundColor = 'white';
 
-            accEx0 = matlab.ui.container.internal.Accordion('Parent', app.LeftContainer);
-            app.Exercise0Panel = matlab.ui.container.internal.AccordionPanel('Parent', accEx0);
-            app.Exercise0Panel.BackgroundColor = 'white';
-            %  app.Exercise1Panel.BackgroundColor = 'white';
-            app.Exercise0Panel.Title = 'Exercise - 1 : Explore Rover Model';
-            app.Exercise0Panel.CollapsedChangedFcn = createCallbackFcn(app, @Ex0CollapsedChangedFcn, true);
-            pnlGL0 = uigridlayout(app.Exercise0Panel, [1 3]);
+            % Create a uitree
+            app.Tree = uitree(app.LeftContainer);
+            app.Tree.Layout.Row = 1;
+            app.Tree.Layout.Column = 1;
+            app.Tree.ClickedFcn = @app.onTreeSelectionChanged;
+
+
+            % Add multiple root nodes to the uitree
+            ex0Node = uitreenode(app.Tree, 'Text', 'Exercise - 1: Explore Rover Model');
+            ex1Node = uitreenode(app.Tree, 'Text', 'Exercise - 2: Calibration');
+            ex2Node = uitreenode(app.Tree, 'Text', 'Exercise - 3: Object Detection');
+            ex3Node = uitreenode(app.Tree, 'Text', 'Exercise - 4: Navigation');
+
+            % Expand the root node
+            %rootNode.expand();
+
+            % Create grid layouts for each exercise but keep them hidden initially
+            app.ExerciseGrids = containers.Map();
+            
+            pnlGL0 = uigridlayout(app.LeftPanel, [1 3]);
             pnlGL0.RowHeight = {"fit"};
             pnlGL0.ColumnWidth = {"fit"};
             pnlGL0.BackgroundColor = '#f0f0f0';
+            pnlGL0.Visible = 'off';
+            app.ExerciseGrids('Exercise - 1: Explore Rover Model') = pnlGL0;
             createEx0Components(app, pnlGL0);
-
-            accEx1 = matlab.ui.container.internal.Accordion('Parent', app.LeftContainer);
-            app.Exercise1Panel = matlab.ui.container.internal.AccordionPanel('Parent', accEx1);
-            app.Exercise1Panel.BackgroundColor = 'white';
-            %  app.Exercise1Panel.BackgroundColor = 'white';
-            app.Exercise1Panel.Title = 'Exercise - 2 : Calibration';
-            app.Exercise1Panel.CollapsedChangedFcn = createCallbackFcn(app, @Ex1CollapsedChangedFcn, true);
-            pnlGL1 = uigridlayout(app.Exercise1Panel, [10 3]);
-            pnlGL1.RowHeight = {"fit", "fit", "fit","fit","fit","fit","fit","fit","fit","fit"};
+            
+            pnlGL1 = uigridlayout(app.LeftPanel, [12 3]);
+            pnlGL1.RowHeight = {"fit", "fit", "fit","fit","fit","fit","fit","fit","fit","fit","fit","fit"};
             pnlGL1.ColumnWidth = {"fit"};
             pnlGL1.BackgroundColor ='#f0f0f0';
+            pnlGL1.Visible = 'off';
+            app.ExerciseGrids('Exercise - 2: Calibration') = pnlGL1;
             createEx1Components(app, pnlGL1);
-
-            accEx2 = matlab.ui.container.internal.Accordion('Parent', app.LeftContainer);
-            app.Exercise2Panel = matlab.ui.container.internal.AccordionPanel('Parent', accEx2);
-            app.Exercise2Panel.BackgroundColor = 'white';
-            app.Exercise2Panel.CollapsedChangedFcn = createCallbackFcn(app, @Ex2CollapsedChangedFcn, true);
-            app.Exercise2Panel.Title = 'Exercise - 3 : Object Detection';
-            app.Exercise2Panel.Collapsed = true;
-            %  app.Exercise2Panel.BackgroundColor = 'white';
-            pnlGL2 = uigridlayout(app.Exercise2Panel, [3 3]);
-            pnlGL2.RowHeight = {"fit", "fit", "fit"};
+            
+            pnlGL2 = uigridlayout(app.LeftPanel, [5 4]);
+            pnlGL2.RowHeight = {"fit", "fit", "fit","fit","fit"};
             pnlGL2.ColumnWidth = {"fit"};
             pnlGL2.BackgroundColor ='#f0f0f0';
+            pnlGL2.Visible = 'off';
+            app.ExerciseGrids('Exercise - 3: Object Detection') = pnlGL2;
             createEx2Components(app, pnlGL2);
-
-            accEx3 = matlab.ui.container.internal.Accordion('Parent', app.LeftContainer);
-            app.Exercise3Panel = matlab.ui.container.internal.AccordionPanel('Parent', accEx3);
-            app.Exercise3Panel.BackgroundColor = 'white';
-            app.Exercise3Panel.Title = 'Exercise - 4 : Navigation';
-            app.Exercise3Panel.Tag = 'Ex3Panel';
-            % app.Exercise3Panel.BackgroundColor = 'white';
-            app.Exercise3Panel.Collapsed = true;
-            app.Exercise3Panel.CollapsedChangedFcn = createCallbackFcn(app, @Ex3CollapsedChangedFcn, true);
-
-            pnlGL3 = uigridlayout(app.Exercise3Panel, [8 3]);
+          
+            pnlGL3 = uigridlayout(app.LeftPanel, [10 3]);
             pnlGL3.RowHeight = {"fit", "fit", "fit", "fit", ...
-                "fit", "fit", "fit", "fit"};
+                "fit", "fit", "fit", "fit","fit","fit"};
             pnlGL3.ColumnWidth = {"fit"};
             pnlGL3.BackgroundColor = '#f0f0f0';
+            pnlGL3.Visible = 'off';
+            app.ExerciseGrids('Exercise - 4: Navigation') = pnlGL3;
             createEx3Components(app, pnlGL3);
 
             app.statusBarGrid = uigridlayout(app.StatusPanel,[1 4]);
@@ -1633,27 +1645,100 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             app.statusBar.Layout.Column = [2 4];
             app.statusBar.ImageSource = 'progressBar.gif';
 
+        end
 
+        function onTreeSelectionChanged(app, src, event)
+            % Get the selected node
+            selectedNode = event.InteractionInformation.Node;
 
+            if isempty(selectedNode)
+                return;
+            end
+
+            % Collapse all nodes except the selected one
+            allNodes = src.Children;  % Assuming src is the uitree
+            for i = 1:length(allNodes)
+                if allNodes(i) ~= selectedNode
+                    allNodes(i).collapse;
+                end
+            end
+
+            % Expand the selected node
+            selectedNode.expand;
+
+            % Hide all exercise grid layouts first
+            keys = app.ExerciseGrids.keys();
+            for i = 1:length(keys)
+                gridLayout = app.ExerciseGrids(keys{i}); % Use parentheses for indexing
+                gridLayout.Visible = 'off';
+            end
+
+            % Show the grid layout corresponding to the selected exercise
+            if isKey(app.ExerciseGrids, selectedNode.Text)
+                
+                selectedExercise = find(ismember(app.ExerciseGrids.keys,selectedNode.Text));
+
+                switch selectedExercise
+
+                    case 1
+
+                        app.RockDetectionAxes.Parent.Parent.Visible = 'off';
+                        app.OnlinePathPlansAxes.Parent.Parent.Visible = 'on';
+
+                    case 2
+                        app.RockDetectionAxes.Parent.Parent.Visible = 'off';
+                        app.OnlinePathPlansAxes.Parent.Parent.Visible = 'on';
+
+                    case 3
+                        app.RockDetectionAxes.Parent.Parent.Visible = 'on';
+                        app.OnlinePathPlansAxes.Parent.Parent.Visible = 'off';
+
+                    case 4
+                        app.RockDetectionAxes.Parent.Parent.Visible = 'on';
+                        app.OnlinePathPlansAxes.Parent.Parent.Visible = 'on';
+
+                    otherwise
+                        error('Invalid exercise selected')
+
+                end
+
+                gridLayout = app.ExerciseGrids(selectedNode.Text); % Use parentheses for indexing
+                gridLayout.Visible = 'on';
+            end
         end
 
         function createEx0Components(app,gridlayout)
 
-            swapGL = uigridlayout(gridlayout, [1 5]);
+            swapGL = uigridlayout(gridlayout, [10 5]);
             swapGL.Layout.Row = 1;
             swapGL.Layout.Column = 2;
             swapGL.RowHeight = {'fit'};
             swapGL.ColumnWidth = {50,50,50,50,50};
             swapGL.BackgroundColor = 'white';
 
+            app.Ex0TitleLabel = uilabel(swapGL);
+            app.Ex0TitleLabel.Layout.Row = 1;
+            app.Ex0TitleLabel.Layout.Column = [1 5];
+            app.Ex0TitleLabel.Text = 'Exercise - 1: Explore Rover Model';
+            app.Ex0TitleLabel.FontWeight = 'Bold';
+
              % Create SimulateButtonEx1
             app.OpenModelButtonEx0 = uibutton(swapGL, 'push');
             app.OpenModelButtonEx0.ButtonPushedFcn = createCallbackFcn(app, @OpenModelButtonEx0ButtonDown, true);
             app.OpenModelButtonEx0.Tag = 'simulate';
             app.OpenModelButtonEx0.FontWeight = 'bold';
-            app.OpenModelButtonEx0.Layout.Row = 1;
-            app.OpenModelButtonEx0.Layout.Column = [2 4];
+            app.OpenModelButtonEx0.Layout.Row = [3 5];
+            app.OpenModelButtonEx0.Layout.Column = [2 5];
             app.OpenModelButtonEx0.Text = 'Open Rover Model';
+
+            % Create go to Exercise Menu button
+            app.OpenModelButtonEx0 = uibutton(swapGL, 'push');
+            app.OpenModelButtonEx0.ButtonPushedFcn = createCallbackFcn(app, @GoToMainMenu, true);
+            app.OpenModelButtonEx0.Tag = 'back';
+            %app.OpenModelButtonEx0.FontWeight = 'bold';
+            app.OpenModelButtonEx0.Layout.Row = [7 9];
+            app.OpenModelButtonEx0.Layout.Column = [1 2];
+            app.OpenModelButtonEx0.Text = [char(10229) ' Exercise Menu'];
 
         end
 
@@ -1667,8 +1752,14 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             %             app.Ex1DropDown.Layout.Column = 1;
             %             app.Ex1DropDown.Value = 'Calibrate Sensors';
 
+            app.Ex1TitleLabel = uilabel(gridlayout);
+            app.Ex1TitleLabel.Layout.Row = 1;
+            app.Ex1TitleLabel.Layout.Column = [1 3];
+            app.Ex1TitleLabel.Text = 'Exercise - 2: Calibrate';
+            app.Ex1TitleLabel.FontWeight = 'Bold';
+
             app.Ex1Label1 = uilabel(gridlayout);
-            app.Ex1Label1.Layout.Row = 1;
+            app.Ex1Label1.Layout.Row = 2;
             app.Ex1Label1.Layout.Column = 1;
             app.Ex1Label1.Text = 'Calibrate Sensors';
             app.Ex1Label1.FontWeight = 'Bold';
@@ -1861,6 +1952,22 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             app.SimulateButtonEx1.Layout.Column = 4;
             app.SimulateButtonEx1.Text = 'Calibrate';
 
+            back_buttonLayout = uigridlayout(gridlayout, [2 4]);
+            back_buttonLayout.RowHeight = {'fit'};
+            back_buttonLayout.ColumnWidth = {'fit', '1x', '1x', 'fit'};
+            back_buttonLayout.Layout.Row = 10;
+            back_buttonLayout.Layout.Column = [1 3];
+            back_buttonLayout.BackgroundColor = 'white';
+
+            % Create go to Exercise Menu button
+            app.OpenModelButtonEx0 = uibutton(back_buttonLayout, 'push');
+            app.OpenModelButtonEx0.ButtonPushedFcn = createCallbackFcn(app, @GoToMainMenu, true);
+            app.OpenModelButtonEx0.Tag = 'back';
+            %app.OpenModelButtonEx0.FontWeight = 'bold';
+            app.OpenModelButtonEx0.Layout.Row = 1;
+            app.OpenModelButtonEx0.Layout.Column = [1];
+            app.OpenModelButtonEx0.Text = [char(10229) ' Exercise Menu'];
+
             %             StateComponents.StartLabel = app.StartLocationEditFieldLabelEx1;
             %             StateComponents.GoalLabel = app.GoalLocationEditFieldLabelEx1;
             %             StateComponents.StartX = app.StartLocationXEditField;
@@ -1876,6 +1983,12 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
 
 
         function createEx2Components(app, gridlayout)
+
+            app.Ex2TitleLabel = uilabel(gridlayout);
+            app.Ex2TitleLabel.Layout.Row = 1;
+            app.Ex2TitleLabel.Layout.Column = [1 3];
+            app.Ex2TitleLabel.Text = 'Exercise - 3: Object Detection';
+            app.Ex2TitleLabel.FontWeight = 'Bold';
 
             exGL = uigridlayout(gridlayout, [3 4]);
             exGL.Layout.Row = 2;
@@ -1940,13 +2053,35 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             app.SimulateButtonEx2.Layout.Row = 1;
             app.SimulateButtonEx2.Layout.Column = 4;
             app.SimulateButtonEx2.Text = 'Detect';
+
+            back_buttonLayout = uigridlayout(gridlayout, [1 4]);
+            back_buttonLayout.RowHeight = {'fit'};
+            back_buttonLayout.ColumnWidth = {'fit','fit','fit','fit'};
+            back_buttonLayout.Layout.Row = 4;
+            back_buttonLayout.Layout.Column = [1 3];
+            back_buttonLayout.BackgroundColor = 'white';
+
+            % Create go to Exercise Menu button
+            app.OpenModelButtonEx0 = uibutton(back_buttonLayout, 'push');
+            app.OpenModelButtonEx0.ButtonPushedFcn = createCallbackFcn(app, @GoToMainMenu, true);
+            app.OpenModelButtonEx0.Tag = 'back';
+            %app.OpenModelButtonEx0.FontWeight = 'bold';
+            app.OpenModelButtonEx0.Layout.Row = 1;
+            app.OpenModelButtonEx0.Layout.Column = [1];
+            app.OpenModelButtonEx0.Text =  [char(10229) ' Exercise Menu'];
         end
 
         function createEx3Components(app, gridlayout)
 
+            app.Ex2TitleLabel = uilabel(gridlayout);
+            app.Ex2TitleLabel.Layout.Row = 1;
+            app.Ex2TitleLabel.Layout.Column = [1 3];
+            app.Ex2TitleLabel.Text = 'Exercise - 4: Navigation';
+            app.Ex2TitleLabel.FontWeight = 'Bold';
+
 
             checkboxLayout = uigridlayout(gridlayout, [2 1]);
-            checkboxLayout.Layout.Row = 1;
+            checkboxLayout.Layout.Row = 2;
             checkboxLayout.Layout.Column = 1;
             checkboxLayout.RowHeight = {'fit'};
             checkboxLayout.ColumnWidth = {'fit'};
@@ -2109,6 +2244,23 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             app.SimulateButtonEx3.Layout.Row = 1;
             app.SimulateButtonEx3.Layout.Column = 4;
             app.SimulateButtonEx3.Text = 'Simulate';
+
+            back_buttonLayout = uigridlayout(gridlayout, [1 4]);
+            back_buttonLayout.RowHeight = {'fit'};
+            back_buttonLayout.ColumnWidth = {'fit','fit','fit','fit'};
+            back_buttonLayout.Layout.Row = 9;
+            back_buttonLayout.Layout.Column = [1 4];
+            back_buttonLayout.BackgroundColor = 'white';
+
+            % Create go to Exercise Menu button
+            app.OpenModelButtonEx0 = uibutton(back_buttonLayout, 'push');
+            app.OpenModelButtonEx0.ButtonPushedFcn = createCallbackFcn(app, @GoToMainMenu, true);
+            app.OpenModelButtonEx0.Tag = 'back';
+            %app.OpenModelButtonEx0.FontWeight = 'bold';
+            app.OpenModelButtonEx0.Layout.Row = 1;
+            app.OpenModelButtonEx0.Layout.Column = [1];
+            app.OpenModelButtonEx0.Text = [char(10229) ' Exercise Menu'];
+
         end
     end
 
