@@ -19,4 +19,4 @@ To launch the app run the following command :
 
 
 
-The rover chassis and arm uses files provided by NASA and shall be used according to NASA Media Usage Guidelines.
+The rover chassis and arm uses files provided by [NASA](https://nasa3d.arc.nasa.gov/detail/M2020-Model-Rover-STLs512020) and shall be used according to [NASA Media Usage Guidelines](https://www.nasa.gov/multimedia/guidelines/index.html).
