@@ -1,11 +1,22 @@
-# Autonomous Mars rover
+# Autonomous Navigation of a Mars rover
 
 % Copyright 2023-2024 The MathWorks, Inc.
 
-This example models a mars rover performing a sample retrieval task. The rover 
-follows a desired path on a rigid terrain surface, stops at the target location 
-and uses its manipulator to pick and store a sample from the surface. A path 
-planner app is used to find obstacle free paths on an uneven terrain. 
+Curious about how a Mars rover autonomously plans and navigates its path, millions of miles away? In this workshop, participants will work with a virtual model of a six-wheeled autonomous rover and help it navigate uncharted terrains. Participants will use sensor data to estimate the rover position, deep learning to detect obstacles, path-planning algorithms to design an optimal path for the rover, and a 6-DOF arm to pick up a soil sample and complete the mission. Participants will see how deep learning and computer vision tools can inform and improve traditional path-planning algorithms, and they will leave the workshop empowered to work on autonomous navigation and robotics challenges in their own areas of application. This workshop demonstrates how MATLAB® and Simulink® can be used together to model a challenging application. The entire application is modeled within a single simulation environment using the following products:
+
+MATLAB®: offline path planning, camera sensors, and front end for demo
+
+Deep Learning Toolbox™: perception module and rock detection
+
+Simscape Multibody™: rover plant model, contact mechanics, and virtual terrain
+
+Computer Vision Toolbox™ and Image Processing Toolbox™: depth estimation of detected rocks
+
+Robotics System Toolbox™ and Navigation Toolbox™: path planning and controls
 
 To launch the app run the following command :
 >> mars_rover_startup
+
+
+
+The rover chassis and arm uses files provided by NASA and shall be used according to NASA Media Usage Guidelines.
