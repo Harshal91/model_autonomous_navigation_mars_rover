@@ -1765,7 +1765,7 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             app.Ex1Label1.FontWeight = 'Bold';
 
             swapGL = uigridlayout(gridlayout, [3 4]);
-            swapGL.Layout.Row = 2;
+            swapGL.Layout.Row = 3;
             swapGL.Layout.Column = [1 3];
             swapGL.RowHeight = {'fit', 'fit', 'fit'};
             swapGL.ColumnWidth = {'fit', 50, 50, 50};
