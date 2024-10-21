@@ -2108,7 +2108,7 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             app.TerrainPointsBelowSlopeAngdegSliderLabel.HorizontalAlignment = 'right';
             app.TerrainPointsBelowSlopeAngdegSliderLabel.Layout.Row = 3;
             app.TerrainPointsBelowSlopeAngdegSliderLabel.Layout.Column = 1;
-            app.TerrainPointsBelowSlopeAngdegSliderLabel.Text = 'Terrain Points Above Slope Ang (deg)';
+            app.TerrainPointsBelowSlopeAngdegSliderLabel.Text = 'Restrict Terrain Regions Using Slope Angle Threshold (deg)';
             
             % Create TerrainPointsBelowSlopeAngdegSlider
             sliderLayout = uigridlayout(gridlayout, [1 1]);
