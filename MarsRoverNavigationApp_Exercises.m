@@ -165,7 +165,8 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             app.SimulateButtonEx1.Enable = 'off';
             app.SimulateButtonEx3.Enable = 'off';
             app.startupFcn();
-            pause(8);            
+            pause(8);
+            app.MarsRoverNavigationAppUIFigure.WindowStyle = "alwaysontop";
             app.MarsRoverNavigationAppUIFigure.Visible = 'on';
             app.RightPanel.Visible = 'on';
             app.isAppLoaded = true;
@@ -778,7 +779,7 @@ classdef MarsRoverNavigationApp_Exercises < matlab.apps.AppBase
             if isMdlOpen
                 set(f, 'pointer', 'arrow');
             end            
-            app.MarsRoverNavigationAppUIFigure.WindowState = 'minimized';            
+            app.MarsRoverNavigationAppUIFigure.Visible = 'off';             
         end
 
         function GoToMainMenu(app,event)                       
