@@ -1,3 +1,5 @@
+[![Open in MATLAB Online](https://www.mathworks.com/images/responsive/global/open-in-matlab-online.svg)](https://workshop-matlab.mathworks.com/open/github/v1?repo=Harshal91/model_autonomous_navigation_mars_rover)
+
 # Autonomous Navigation of a Mars rover
 
 % Copyright 2023-2024 The MathWorks, Inc.
